@@ -5,6 +5,7 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
+
 Vue.use(vuetify, {
   iconfont: 'md'
 })

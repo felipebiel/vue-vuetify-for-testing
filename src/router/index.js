@@ -4,6 +4,7 @@ import Home from '@/views/pages/Home.vue'
 import TreeVueChart from '@/views/pages/TreeVueChart.vue'
 import VuetifyTree from '@/views/pages/VuetifyTree'
 import TreeExample from "@/views/pages/TreeExample";
+import DiagramFlowChartPage from "@/views/pages/DiagramFlowChartPage";
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ Vue.use(VueRouter)
     name: 'TreeExample',
     component: TreeExample
   },
+  {
+    path: '/diagram-flow-chart',
+    name: 'DiagramFlowChartPage',
+    component: DiagramFlowChartPage
+  }
 ]
 
 const router = new VueRouter({

@@ -85,7 +85,7 @@
       diagramsExamples: [
          {
           text: 'Diagramador baseador no FlowChart',
-          href: '/tree-chart',
+          href: '/diagram-flow-chart',
         },
       ]
     }),

@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import TreeVueChart from '../views/TreeVueChart.vue'
-import VuetifyTree from '../views/VuetifyTree'
-import TreeExample from "../views/TreeExample";
+import Home from '@/views/pages/Home.vue'
+import TreeVueChart from '@/views/pages/TreeVueChart.vue'
+import VuetifyTree from '@/views/pages/VuetifyTree'
+import TreeExample from "@/views/pages/TreeExample";
 
 Vue.use(VueRouter)
 

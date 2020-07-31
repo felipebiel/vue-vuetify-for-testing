@@ -30,7 +30,7 @@
 
         <v-row justify="center">
           <a
-            v-for="(next, i) in whatsNext"
+            v-for="(next, i) in treeExamples"
             :key="i"
             :href="next.href"
             class="subheading mx-3"
@@ -49,7 +49,7 @@
 
     data: () => ({
 
-      whatsNext: [
+      treeExamples: [
         {
           text: 'Vue-tree-chart',
           href: '/tree-chart',

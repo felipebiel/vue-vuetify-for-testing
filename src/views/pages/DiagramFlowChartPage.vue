@@ -65,23 +65,26 @@ export default {
   data() {
     return {
       nodes: [
-        { id: 1, x: 140, y: 270, name: "Start", type: "start" },
         {
-          id: 2,
-          x: 540,
-          y: 270,
-          name: "End",
-          type: "end",
-          description: "I'm here",
+          id: +new Date(),
+          x: 40,
+          y: 130,
+          title: "TITULO",
+          type: "operation",
+          text: 'TEXT long text TEXT long text TEXT long text TEXT long text TEXT long text ',
+          width: 150,
+        },
+        {
+          id: +new Date(),
+          x: 340,
+          y: 350,
+          title: "TITULO",
+          type: "operation",
+          text: 'TEXT long text TEXT long text TEXT long text TEXT long text TEXT long text ',
+          width: 150,
         },
       ],
       connections: [
-        {
-          source: { id: 1, position: "right" },
-          destination: { id: 2, position: "left" },
-          id: 1,
-          type: "pass",
-        },
       ],
     };
   },

@@ -71,7 +71,7 @@
             <v-textarea label="Texto" v-model="nodeForm.text"></v-textarea>
           </v-flex>
           <v-flex xs12 v-if="is_touch_screen">
-            <v-select :disabled="readonlyView" v-model="node_destination" :items="node_destination_list"
+            <v-select  v-model="node_destination" :items="node_destination_list"
               item-text="text" label="Ligar com" return-object>
               <template v-slot:no-data>
                 <v-alert :value="true" class="text-xs-center">
@@ -85,7 +85,7 @@
             </v-select>
           </v-flex>
           <v-flex xs12 v-if="is_touch_screen">
-            <v-select :disabled="readonlyView" v-model="direction_source" :items="list_directions" item-text="text"
+            <v-select  v-model="direction_source" :items="list_directions" item-text="text"
               label="Saindo pelo ponto" return-object>
               <template v-slot:no-data>
                 <v-alert :value="true" class="text-xs-center">
@@ -95,7 +95,7 @@
             </v-select>
           </v-flex>
           <v-flex xs12 v-if="is_touch_screen">
-            <v-select :disabled="readonlyView" v-model="direction_destination" :items="list_directions"
+            <v-select v-model="direction_destination" :items="list_directions"
               item-text="text" label="Chegando pelo ponto" return-object>
               <template v-slot:no-data>
                 <v-alert :value="true" class="text-xs-center">
@@ -127,7 +127,7 @@ export default {
     return {
       nodes: [
         {
-          id: +new Date(),
+          id: +new Date()+1,
           x: 40,
           y: 130,
           title: "TITULO 1",
@@ -156,6 +156,24 @@ export default {
       nodeDialogVisible: false,
       is_touch_screen: false,
       nodeForm: { title: null, id: null, type: null, text: '', endCause: false },
+      list_directions: [
+        {
+          text: 'Esquerdo',
+          value: 'left'
+        },
+        {
+          text: 'Direito',
+          value: 'right'
+        },
+        {
+          text: 'Superior',
+          value: 'top'
+        },
+        {
+          text: 'Inferior',
+          value: 'bottom'
+        }
+      ],
     };
   },
   mounted () {
@@ -180,7 +198,9 @@ export default {
     handleEditNode(node) {
       this.$refs.chart.save();
       const json = this.last_return_object_chart;
+      console.log(json);
       this.node_destination_list = json.nodes.filter((element) => { return element.id != node.id });
+      console.log(this.node_destination_list);
       this.direction_destination = '';
       this.direction_source = '';
       this.node_destination = {};

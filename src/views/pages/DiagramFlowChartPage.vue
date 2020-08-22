@@ -193,7 +193,41 @@ export default {
       // close popup edition
       this.nodeDialogVisible = false;
     },
-    handleClickSaveNode() {},
+    handleClickSaveNode() {
+      //salvando a edição do node
+      this.selectedNode.target.title = this.nodeForm.title;
+      this.selectedNode.target.type = this.nodeForm.type;
+      this.selectedNode.target.text = this.nodeForm.text;
+      this.selectedNode.target.endCause = this.nodeForm.endCause;
+
+      if (this.is_touch_screen) {
+        // cria coneção apenas se for telas de touch
+        if (this.direction_source.value && this.node_destination.id && this.direction_destination.value) {
+          //cria somente se escolheu os 3 campos para coneção
+          const new_connection = {
+            id: +new Date(),
+            type: "pass",
+            title: "Pass",
+            source: {
+              id: this.selectedNode.target.id,
+              position: this.direction_source.value
+            },
+            destination: {
+              id: this.node_destination.id,
+              position: this.direction_destination.value
+            }
+          };
+          // verifica se existe a coneção entre esses dois nodos
+          if (this.last_return_object_chart.connections.some((element) => { return element.source.id === new_connection.source.id && element.destination.id === new_connection.destination.id })) {
+            // this.alertConnection();
+          } else {
+            //metodo criado dentro do FlowChart que adiciona uma nova conexão as connections internas
+            this.$refs.chart.pushConnection(new_connection);
+          }
+        }
+      }
+      this.handleClickCancelSaveNode();
+    },
     handleDblClick(position) {
       this.$refs.chart.add({
         id: +new Date(),

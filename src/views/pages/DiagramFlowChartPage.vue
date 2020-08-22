@@ -20,9 +20,9 @@
                         x: 10 + Math.floor(Math.random() * 30),
                         y: 100 + Math.floor(Math.random() * 30),
                         width:200,
-                        title: '',
+                        title: 'Novo Nodo',
                         type: 'operation',
-                        text: '',
+                        text: 'Escreva algo aqui...',
                         endCause: false
                       })
                     "
@@ -50,69 +50,75 @@
             ref="chart"
           ></FlowChart>
         </v-col>
+
+        <v-col cols="12">
+          <div>
+            {{ json_chart_emit }}
+          </div>
+        </v-col>
       </v-row>
     </v-container>
 
     <v-dialog v-model="nodeDialogVisible" width="500px" persistent>
-    <v-card>
-      <v-card-title class="headline grey lighten-2" primary-title>
-        Editar
-      </v-card-title>
-      <v-divider></v-divider>
-      <v-card-text>
-        <v-layout wrap>
-          <v-flex xs12>
-            <v-switch v-model="nodeForm.endCause" label="Causa Raiz"></v-switch>
-          </v-flex>
-          <v-flex xs12>
-            <v-text-field label="Barreira" v-model="nodeForm.title"></v-text-field>
-          </v-flex>
-          <v-flex xs12>
-            <v-textarea label="Texto" v-model="nodeForm.text"></v-textarea>
-          </v-flex>
-          <v-flex xs12 v-if="is_touch_screen">
-            <v-select  v-model="node_destination" :items="node_destination_list"
-              item-text="text" label="Ligar com" return-object>
-              <template v-slot:no-data>
-                <v-alert :value="true" class="text-xs-center">
-                  Não há itens disponiveis
-                </v-alert>
-              </template>
-              <template v-slot:selection="{ item }">
-                <span v-if="item.text.length < 24">{{ item.text }}</span>
-                <span v-else>{{ item.text.substring(0,24)+".." }}</span>
-              </template>
-            </v-select>
-          </v-flex>
-          <v-flex xs12 v-if="is_touch_screen">
-            <v-select  v-model="direction_source" :items="list_directions" item-text="text"
-              label="Saindo pelo ponto" return-object>
-              <template v-slot:no-data>
-                <v-alert :value="true" class="text-xs-center">
-                  Não há itens disponiveis
-                </v-alert>
-              </template>
-            </v-select>
-          </v-flex>
-          <v-flex xs12 v-if="is_touch_screen">
-            <v-select v-model="direction_destination" :items="list_directions"
-              item-text="text" label="Chegando pelo ponto" return-object>
-              <template v-slot:no-data>
-                <v-alert :value="true" class="text-xs-center">
-                  Não há itens disponiveis
-                </v-alert>
-              </template>
-            </v-select>
-          </v-flex>
-        </v-layout>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="default" @click="handleClickCancelSaveNode">Cancelar</v-btn>
-        <v-spacer></v-spacer>
-        <v-btn color="success" @click="handleClickSaveNode">Salvar</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>
+          Editar
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-layout wrap>
+            <v-flex xs12>
+              <v-switch v-model="nodeForm.endCause" label="Causa Raiz"></v-switch>
+            </v-flex>
+            <v-flex xs12>
+              <v-text-field label="Barreira" v-model="nodeForm.title"></v-text-field>
+            </v-flex>
+            <v-flex xs12>
+              <v-textarea label="Texto" v-model="nodeForm.text"></v-textarea>
+            </v-flex>
+            <v-flex xs12 v-if="is_touch_screen">
+              <v-select  v-model="node_destination" :items="node_destination_list"
+                item-text="text" label="Ligar com" return-object>
+                <template v-slot:no-data>
+                  <v-alert :value="true" class="text-xs-center">
+                    Não há itens disponiveis
+                  </v-alert>
+                </template>
+                <template v-slot:selection="{ item }">
+                  <span v-if="item.text.length < 24">{{ item.text }}</span>
+                  <span v-else>{{ item.text.substring(0,24)+".." }}</span>
+                </template>
+              </v-select>
+            </v-flex>
+            <v-flex xs12 v-if="is_touch_screen">
+              <v-select  v-model="direction_source" :items="list_directions" item-text="text"
+                label="Saindo pelo ponto" return-object>
+                <template v-slot:no-data>
+                  <v-alert :value="true" class="text-xs-center">
+                    Não há itens disponiveis
+                  </v-alert>
+                </template>
+              </v-select>
+            </v-flex>
+            <v-flex xs12 v-if="is_touch_screen">
+              <v-select v-model="direction_destination" :items="list_directions"
+                item-text="text" label="Chegando pelo ponto" return-object>
+                <template v-slot:no-data>
+                  <v-alert :value="true" class="text-xs-center">
+                    Não há itens disponiveis
+                  </v-alert>
+                </template>
+              </v-select>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="default" @click="handleClickCancelSaveNode">Cancelar</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="success" @click="handleClickSaveNode">Salvar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -174,9 +180,11 @@ export default {
           value: 'bottom'
         }
       ],
+      json_chart_emit: [],
     };
   },
   mounted () {
+    //verifcia a resolução para ativar as coneções manuais (sem mouse pelo popup de edição)
     window.addEventListener('resize', () => {
       if (window.innerWidth < 960) {
         this.is_touch_screen = true;
@@ -189,6 +197,9 @@ export default {
     } else {
       this.is_touch_screen = false;
     };
+    //começa sincronizando os datas do componente para ter atualização do json local automaticamente
+    this.$refs.chart.save();
+    this.json_chart_emit = this.last_return_object_chart;
   },
   methods: {
     handleChartSave(nodes, connections) {
@@ -248,11 +259,13 @@ export default {
     handleDblClick(position) {
       this.$refs.chart.add({
         id: +new Date(),
-        x: position.x,
-        y: position.y,
-        name: "New",
-        type: "operation",
-        approvers: [],
+        x: 10 + Math.floor(Math.random() * 30),
+        y: 100 + Math.floor(Math.random() * 30),
+        width:200,
+        title: 'Novo Nodo',
+        type: 'operation',
+        text: 'Escreva algo aqui...',
+        endCause: false
       });
     },
   },

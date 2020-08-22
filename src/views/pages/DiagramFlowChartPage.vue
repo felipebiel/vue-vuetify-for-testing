@@ -52,6 +52,67 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-dialog v-model="nodeDialogVisible" width="500px" persistent>
+    <v-card>
+      <v-card-title class="headline grey lighten-2" primary-title>
+        Editar
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text>
+        <v-layout wrap>
+          <v-flex xs12>
+            <v-switch v-model="nodeForm.endCause" label="Causa Raiz"></v-switch>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field label="Barreira" v-model="nodeForm.title"></v-text-field>
+          </v-flex>
+          <v-flex xs12>
+            <v-textarea label="Texto" v-model="nodeForm.text"></v-textarea>
+          </v-flex>
+          <v-flex xs12 v-if="is_touch_screen">
+            <v-select :disabled="readonlyView" v-model="node_destination" :items="node_destination_list"
+              item-text="text" label="Ligar com" return-object>
+              <template v-slot:no-data>
+                <v-alert :value="true" class="text-xs-center">
+                  Não há itens disponiveis
+                </v-alert>
+              </template>
+              <template v-slot:selection="{ item, index }">
+                <span v-if="item.text.length < 24">{{ item.text }}</span>
+                <span v-else>{{ item.text.substring(0,24)+".." }}</span>
+              </template>
+            </v-select>
+          </v-flex>
+          <v-flex xs12 v-if="is_touch_screen">
+            <v-select :disabled="readonlyView" v-model="direction_source" :items="list_directions" item-text="text"
+              label="Saindo pelo ponto" return-object>
+              <template v-slot:no-data>
+                <v-alert :value="true" class="text-xs-center">
+                  Não há itens disponiveis
+                </v-alert>
+              </template>
+            </v-select>
+          </v-flex>
+          <v-flex xs12 v-if="is_touch_screen">
+            <v-select :disabled="readonlyView" v-model="direction_destination" :items="list_directions"
+              item-text="text" label="Chegando pelo ponto" return-object>
+              <template v-slot:no-data>
+                <v-alert :value="true" class="text-xs-center">
+                  Não há itens disponiveis
+                </v-alert>
+              </template>
+            </v-select>
+          </v-flex>
+        </v-layout>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="default" @click="handleClickCancelSaveNode">Cancelar</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn color="success" @click="handleClickSaveNode">Salvar</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
   </div>
 </template>
 
@@ -86,12 +147,50 @@ export default {
       ],
       connections: [
       ],
+      last_return_object_chart: {},
+      node_destination_list: [],
+      direction_destination: {},
+      direction_source: {},
+      node_destination: {},
+      selectedNode: { target: null },
+      nodeDialogVisible: false,
+      is_touch_screen: false,
+      nodeForm: { title: null, id: null, type: null, text: '', endCause: false },
+    };
+  },
+  mounted () {
+    window.addEventListener('resize', () => {
+      if (window.innerWidth < 960) {
+        this.is_touch_screen = true;
+      } else {
+        this.is_touch_screen = false;
+      }
+    });
+    if (window.innerWidth < 960) {
+      this.is_touch_screen = true;
+    } else {
+      this.is_touch_screen = false;
     };
   },
   methods: {
-    handleChartSave(nodes, connections) {},
-    handleEditNode(node) {},
+    handleChartSave(nodes, connections) {
+      // return json of nodes and connections
+      this.last_return_object_chart = { nodes: nodes, connections: connections };
+    },
+    handleEditNode(node) {
+      this.$refs.chart.save();
+      const json = this.last_return_object_chart;
+      this.node_destination_list = json.nodes.filter((element) => { return element.id != node.id });
+      this.direction_destination = '';
+      this.direction_source = '';
+      this.node_destination = {};
+      this.selectedNode.target = node;
+      this.nodeDialogVisible = true;
+      this.nodeForm = { title: node.title, id: node.id, type: node.type, text: node.text, endCause: node.endCause };
+    },
     handleEditConnection(connection) {},
+    handleClickCancelSaveNode() {},
+    handleClickSaveNode() {},
     handleDblClick(position) {
       this.$refs.chart.add({
         id: +new Date(),

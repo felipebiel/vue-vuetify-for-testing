@@ -52,8 +52,12 @@
         </v-col>
 
         <v-col cols="12">
-          <div>
-            {{ json_chart_emit }}
+          <v-col cols="12">
+            <h3 class="display-1 font-weight-bold mb-3">Json de retorno</h3>
+          </v-col>
+          <div class="text-left grey lighten-2 pa-3">
+            {{  }}
+            <json-viewer :value="json_chart_emit" :expand-depth="5" copyable ></json-viewer>
           </div>
         </v-col>
       </v-row>
@@ -124,10 +128,13 @@
 
 <script>
 import FlowChart from "@/components/DiagramFlowChart/Flowchart";
+import JsonViewer from 'vue-json-viewer'
 
 export default {
   components: {
     FlowChart,
+    JsonViewer
+
   },
   data() {
     return {
@@ -198,6 +205,7 @@ export default {
       this.is_touch_screen = false;
     };
     //começa sincronizando os datas do componente para ter atualização do json local automaticamente
+    // Erro no console é devido ao plugin de vue-json-pretty não aceitar funções como atributos do objeto
     this.$refs.chart.save();
     this.json_chart_emit = this.last_return_object_chart;
   },

@@ -78,7 +78,7 @@
                   Não há itens disponiveis
                 </v-alert>
               </template>
-              <template v-slot:selection="{ item, index }">
+              <template v-slot:selection="{ item }">
                 <span v-if="item.text.length < 24">{{ item.text }}</span>
                 <span v-else>{{ item.text.substring(0,24)+".." }}</span>
               </template>
@@ -130,7 +130,7 @@ export default {
           id: +new Date(),
           x: 40,
           y: 130,
-          title: "TITULO",
+          title: "TITULO 1",
           type: "operation",
           text: 'TEXT long text TEXT long text TEXT long text TEXT long text TEXT long text ',
           width: 150,
@@ -139,7 +139,7 @@ export default {
           id: +new Date(),
           x: 340,
           y: 350,
-          title: "TITULO",
+          title: "TITULO 2",
           type: "operation",
           text: 'TEXT long text TEXT long text TEXT long text TEXT long text TEXT long text ',
           width: 150,
@@ -189,7 +189,10 @@ export default {
       this.nodeForm = { title: node.title, id: node.id, type: node.type, text: node.text, endCause: node.endCause };
     },
     handleEditConnection(connection) {},
-    handleClickCancelSaveNode() {},
+    handleClickCancelSaveNode() {
+      // close popup edition
+      this.nodeDialogVisible = false;
+    },
     handleClickSaveNode() {},
     handleDblClick(position) {
       this.$refs.chart.add({

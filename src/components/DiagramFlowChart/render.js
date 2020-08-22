@@ -49,34 +49,33 @@ function render(g, node, isSelected) {
     node.width = node.width || 200;
     // eslint-disable-next-line
     node.height = setHeight(g, node);
-    const borderColor = isSelected ? '#666666' : '#bbbbbb';
-    if (node.type !== 'start' && node.type !== 'end') {
-        // title
-        g.append('rect')
-            .attr('x', node.x)
-            .attr('y', node.y)
-            .attr('stroke', borderColor)
-            .attr('class', 'title')
-            .style('height', '20px')
-            .style('fill', '#f1f3f4')
-            .style('stroke-width', '1px')
-            .style('width', `${node.width}px`);
-        g.append('text')
-            .attr('x', node.x + 4)
-            .attr('y', node.y + 15)
-            .attr('class', 'unselectable')
-            .text(() => node.title)
-            .each(function wrap() {
-                const self = d3.select(this);
-                let textLength = self.node().getComputedTextLength();
-                let text = self.text();
-                while (textLength > (node.width - (2 * 4)) && text.length > 0) {
-                    text = text.slice(0, -1);
-                    self.text(`${text}...`);
-                    textLength = self.node().getComputedTextLength();
-                }
-            });
-    }
+    const borderColor = isSelected ? '#666666' : '#bbbbbb';    
+    // title
+    g.append('rect')
+        .attr('x', node.x)
+        .attr('y', node.y)
+        .attr('stroke', borderColor)
+        .attr('class', 'title')
+        .style('height', '20px')
+        .style('fill', '#f1f3f4')
+        .style('stroke-width', '1px')
+        .style('width', `${node.width}px`);
+    g.append('text')
+        .attr('x', node.x + 4)
+        .attr('y', node.y + 15)
+        .attr('class', 'unselectable')
+        .text(() => node.title)
+        .each(function wrap() {
+            const self = d3.select(this);
+            let textLength = self.node().getComputedTextLength();
+            let text = self.text();
+            while (textLength > (node.width - (2 * 4)) && text.length > 0) {
+                text = text.slice(0, -1);
+                self.text(`${text}...`);
+                textLength = self.node().getComputedTextLength();
+            }
+        });
+    
     // body
     const colorFill = node.endCause ? '#fa8e3e' : 'white';
 

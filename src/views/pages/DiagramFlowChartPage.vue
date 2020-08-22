@@ -192,15 +192,12 @@ export default {
   },
   methods: {
     handleChartSave(nodes, connections) {
-      // return json of nodes and connections
       this.last_return_object_chart = { nodes: nodes, connections: connections };
     },
     handleEditNode(node) {
       this.$refs.chart.save();
       const json = this.last_return_object_chart;
-      console.log(json);
       this.node_destination_list = json.nodes.filter((element) => { return element.id != node.id });
-      console.log(this.node_destination_list);
       this.direction_destination = '';
       this.direction_source = '';
       this.node_destination = {};
